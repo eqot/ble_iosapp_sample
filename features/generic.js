@@ -68,10 +68,9 @@ var styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   row: {
-    paddingLeft: 14,
-    paddingRight: 14,
     flexDirection: 'row',
     flex: 1,
+    paddingHorizontal: 14,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
