@@ -18,8 +18,6 @@ var GenericTab = React.createClass({
   },
 
   getInitialState() {
-    BLE.addEvent('foo', 'bar');
-
     return {
       led: false,
       text: 'off',
