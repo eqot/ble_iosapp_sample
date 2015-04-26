@@ -46,13 +46,13 @@ var GenericTab = React.createClass({
     return (
       <View style={styles.tabContent}>
         <View style={styles.row}>
-        <Text>LED {this.state.text}</Text>
-        <SwitchIOS
-          onValueChange={(value) => {
-            this.setLed(value);
-            this.setState({led: value});
-          }}
-          value={this.state.led} />
+          <Text>LED {this.state.text}</Text>
+          <SwitchIOS
+            onValueChange={(value) => {
+              this.setLed(value);
+              this.setState({led: value});
+            }}
+            value={this.state.led} />
         </View>
       </View>
     )
@@ -64,13 +64,13 @@ var styles = StyleSheet.create({
     paddingTop: 20,
     flex: 1,
     justifyContent: 'flex-start',
+    // alignSelf: 'center',
   },
   row: {
     flexDirection: 'row',
     flex: 1,
     paddingHorizontal: 14,
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
 });
 
