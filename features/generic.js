@@ -25,7 +25,7 @@ var GenericTab = React.createClass({
     return {
       led: true,
       text: 'off',
-      peripherals: [],
+      peripherals: ['dummy'],
       dataSource: this.ds.cloneWithRows([]),
     };
   },
@@ -71,12 +71,25 @@ var GenericTab = React.createClass({
             }}
             value={this.state.led} />
         </View>
-        <ListView
+        <ListView style={styles.list}
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData}</Text>}
+          renderRow={this.renderRow}
         />
       </View>
     )
+  },
+
+  renderRow: function(rowData: string, sectionID: number, rowID: number) {
+    return (
+      <View>
+        <View style={styles.listrow}>
+          <Text style={styles.text}>
+            {rowData}
+          </Text>
+        </View>
+        <View style={styles.separator} />
+      </View>
+    );
   }
 });
 
@@ -92,6 +105,23 @@ var styles = StyleSheet.create({
     paddingHorizontal: 14,
     justifyContent: 'space-between',
   },
+  list: {
+    flex: 1,
+  },
+  listrow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 10,
+    backgroundColor: '#f6f6f6',
+  },
+  text: {
+    flex: 1,
+    paddingHorizontal: 14,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#cccccc',
+  }
 });
 
 module.exports = GenericTab;
