@@ -2,12 +2,13 @@
 
 #import <CoreBluetooth/CoreBluetooth.h>
 
+#import "RCTBridge.h"
+#import "RCTEventDispatcher.h"
 #import "RCTLog.h"
 
 @interface BLE () <CBCentralManagerDelegate>
 
 @property (nonatomic, strong) CBCentralManager *centralManager;
-@property (nonatomic, strong) RCTResponseSenderBlock callback;
 
 @end
 
@@ -15,10 +16,10 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(startScaning:(RCTResponseSenderBlock)callback)
-{
-  self.callback = callback;
+@synthesize bridge = _bridge;
 
+RCT_EXPORT_METHOD(startScaning)
+{
   self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
 
   RCTLogInfo(@"Pretending to create a");
@@ -44,7 +45,10 @@ RCT_EXPORT_METHOD(startScaning:(RCTResponseSenderBlock)callback)
 {
   RCTLogInfo(@"peripheral:%@", peripheral);
 
-  self.callback(@[[NSNull null], peripheral.name]);
+  [self.bridge.eventDispatcher sendDeviceEventWithName:@"discoverPeripheral"
+    body:@{
+      @"name": peripheral.name
+    }];
 }
 
 RCT_EXPORT_METHOD(stopScaning)

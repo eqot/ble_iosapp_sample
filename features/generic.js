@@ -7,6 +7,7 @@ var {
   SwitchIOS,
   Text,
   View,
+  DeviceEventEmitter,
 } = React;
 
 var BLE = require('NativeModules').BLE;
@@ -19,27 +20,35 @@ var GenericTab = React.createClass({
 
   getInitialState() {
     return {
-      led: false,
+      led: true,
       text: 'off',
     };
   },
 
+  componentDidMount: function() {
+    DeviceEventEmitter.addListener('discoverPeripheral', (name, identifier) => {
+      this.setState({text: name});
+    });
+
+    this.startScaning();
+  },
+
   setLed: function(value) {
     if (value) {
-      this.state.text = 'on';
-
-      BLE.startScaning((error, foo) => {
-        if (error) {
-          console.log(error);
-        } else {
-          this.setState({text: foo});
-        }
-      });
+      this.startScaning();
     } else {
-      this.state.text = 'off';
+      this.state.text = '';
 
-      BLE.stopScaning();
+      this.stopScaning();
     }
+  },
+
+  startScaning: function() {
+    BLE.startScaning();
+  },
+
+  stopScaning: function() {
+    BLE.stopScaning();
   },
 
   render: function() {
@@ -64,7 +73,6 @@ var styles = StyleSheet.create({
     paddingTop: 20,
     flex: 1,
     justifyContent: 'flex-start',
-    // alignSelf: 'center',
   },
   row: {
     flexDirection: 'row',
