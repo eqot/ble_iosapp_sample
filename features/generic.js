@@ -28,7 +28,7 @@ var GenericTab = React.createClass({
     if (value) {
       this.state.text = 'on';
 
-      BLE.startScan((error, foo) => {
+      BLE.startScaning((error, foo) => {
         if (error) {
           console.log(error);
         } else {
@@ -38,7 +38,7 @@ var GenericTab = React.createClass({
     } else {
       this.state.text = 'off';
 
-      BLE.stopScan();
+      BLE.stopScaning();
     }
   },
 

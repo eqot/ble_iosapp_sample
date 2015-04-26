@@ -15,7 +15,7 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(startScan:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(startScaning:(RCTResponseSenderBlock)callback)
 {
   self.callback = callback;
 
@@ -47,7 +47,7 @@ RCT_EXPORT_METHOD(startScan:(RCTResponseSenderBlock)callback)
   self.callback(@[[NSNull null], peripheral.name]);
 }
 
-RCT_EXPORT_METHOD(stopScan)
+RCT_EXPORT_METHOD(stopScaning)
 {
   [self.centralManager stopScan];
 }
