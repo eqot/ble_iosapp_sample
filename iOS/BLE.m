@@ -1,4 +1,4 @@
-#import "RCTBluetoothLowEnergy.h"
+#import "BLE.h"
 
 #import <CoreBluetooth/CoreBluetooth.h>
 
