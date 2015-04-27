@@ -7,6 +7,7 @@ var {
   SwitchIOS,
   Text,
   ListView,
+  TouchableHighlight,
   View,
   DeviceEventEmitter,
 } = React;
@@ -81,16 +82,22 @@ var GenericTab = React.createClass({
 
   renderRow: function(rowData: string, sectionID: number, rowID: number) {
     return (
-      <View>
-        <View style={styles.listrow}>
-          <Text style={styles.text}>
-            {rowData}
-          </Text>
+      <TouchableHighlight onPress={() => this.onPressRow(rowID)}>
+        <View>
+          <View style={styles.listrow}>
+            <Text style={styles.text}>
+              {rowData}
+            </Text>
+          </View>
+          <View style={styles.separator} />
         </View>
-        <View style={styles.separator} />
-      </View>
+      </TouchableHighlight>
     );
-  }
+  },
+
+  onPressRow: function(rowID: number) {
+    this.setState({text: rowID});
+  },
 });
 
 var styles = StyleSheet.create({
