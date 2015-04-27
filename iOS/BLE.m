@@ -7,9 +7,8 @@
 #import "RCTLog.h"
 
 @interface BLE () <CBCentralManagerDelegate>
-
 @property (nonatomic, strong) CBCentralManager *centralManager;
-
+@property (nonatomic, strong) CBPeripheral *peripheral;
 @end
 
 @implementation BLE
@@ -44,6 +43,7 @@ RCT_EXPORT_METHOD(startScaning)
                    RSSI:(NSNumber *)RSSI
 {
   RCTLogInfo(@"peripheral:%@", peripheral);
+  self.peripheral = peripheral;
 
   [self.bridge.eventDispatcher sendDeviceEventWithName:@"discoverPeripheral"
     body:@{
@@ -54,6 +54,26 @@ RCT_EXPORT_METHOD(startScaning)
 RCT_EXPORT_METHOD(stopScaning)
 {
   [self.centralManager stopScan];
+}
+
+RCT_EXPORT_METHOD(connect:(NSInteger)index)
+{
+  RCTLogInfo(@"index: %d", index);
+
+  [self.centralManager connectPeripheral:self.peripheral options:nil];
+}
+
+- (void) centralManager:(CBCentralManager *)central
+   didConnectPeripheral:(CBPeripheral *)peripheral
+{
+  RCTLogInfo(@"Connected");
+}
+
+- (void) centralManager:(CBCentralManager *)central
+  didFailToConnectPeripheral:(CBPeripheral *) peripheral
+  error:(NSError *)error
+{
+  RCTLogInfo(@"Failed");
 }
 
 @end
