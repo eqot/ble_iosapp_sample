@@ -29,6 +29,7 @@ RCT_EXPORT_METHOD(startScaning)
 
   switch (central.state) {
     case CBCentralManagerStatePoweredOn:
+      [self.centralManager stopScan];
       [self.centralManager scanForPeripheralsWithServices:nil options:nil];
       break;
 
