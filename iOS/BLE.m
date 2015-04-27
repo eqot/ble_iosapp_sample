@@ -6,7 +6,7 @@
 #import "RCTEventDispatcher.h"
 #import "RCTLog.h"
 
-@interface BLE () <CBCentralManagerDelegate>
+@interface BLE () <CBCentralManagerDelegate, CBPeripheralDelegate>
 @property (nonatomic, strong) CBCentralManager *centralManager;
 @property (nonatomic, strong) CBPeripheral *peripheral;
 @end
@@ -67,6 +67,9 @@ RCT_EXPORT_METHOD(connect:(NSInteger)index)
    didConnectPeripheral:(CBPeripheral *)peripheral
 {
   RCTLogInfo(@"Connected");
+
+  peripheral.delegate = self;
+  [peripheral discoverServices:nil];
 }
 
 - (void) centralManager:(CBCentralManager *)central
@@ -74,6 +77,13 @@ RCT_EXPORT_METHOD(connect:(NSInteger)index)
   error:(NSError *)error
 {
   RCTLogInfo(@"Failed");
+}
+
+- (void)   peripheral:(CBPeripheral *)peripheral
+  didDiscoverServices:(NSError *)error
+{
+  NSArray *services = peripheral.services;
+  RCTLogInfo(@"%lu services: %@", (unsigned long)services.count, services);
 }
 
 @end
