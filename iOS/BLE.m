@@ -96,6 +96,20 @@ RCT_EXPORT_METHOD(connect:(NSInteger)index)
 {
   NSArray *characteristics = service.characteristics;
   RCTLogInfo(@"%lu characteristics: %@", (unsigned long)characteristics.count, characteristics);
+
+  for (CBCharacteristic *characteristic in characteristics) {
+    if (characteristic.properties == CBCharacteristicPropertyRead) {
+      [peripheral readValueForCharacteristic:characteristic];
+    }
+  }
+}
+
+- (void)               peripheral:(CBPeripheral *)peripheral
+  didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
+                            error:(NSError *)error
+{
+  RCTLogInfo(@"Read. serivce uuid:%@, characteristic uuid:%@, value:%@",
+    characteristic.service.UUID, characteristic.UUID, characteristic.value);
 }
 
 @end
