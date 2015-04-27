@@ -84,6 +84,18 @@ RCT_EXPORT_METHOD(connect:(NSInteger)index)
 {
   NSArray *services = peripheral.services;
   RCTLogInfo(@"%lu services: %@", (unsigned long)services.count, services);
+
+  for (CBService *service in services) {
+    [peripheral discoverCharacteristics:nil forService:service];
+  }
+}
+
+- (void)                    peripheral:(CBPeripheral *)peripheral
+  didDiscoverCharacteristicsForService:(CBService *)service
+                                 error:(NSError *)error
+{
+  NSArray *characteristics = service.characteristics;
+  RCTLogInfo(@"%lu characteristics: %@", (unsigned long)characteristics.count, characteristics);
 }
 
 @end
