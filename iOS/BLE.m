@@ -21,7 +21,7 @@ RCT_EXPORT_METHOD(startScaning)
 {
   self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
 
-  RCTLogInfo(@"Pretending to create a");
+  RCTLogInfo(@"Start scanning.");
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
