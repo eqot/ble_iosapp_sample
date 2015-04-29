@@ -62,9 +62,9 @@ RCT_EXPORT_METHOD(stopScaning)
   [self.centralManager stopScan];
 }
 
-RCT_EXPORT_METHOD(connect:(NSInteger)index)
+RCT_EXPORT_METHOD(connect:(NSString *)name)
 {
-  RCTLogInfo(@"index: %d", index);
+  RCTLogInfo(@"Connecting to %@", name);
 
   [self.centralManager connectPeripheral:self.peripheral options:nil];
 }

@@ -94,7 +94,7 @@ var GenericTab = React.createClass({
   },
 
   onPressRow: function(rowID: number) {
-    BLE.connect(rowID);
+    BLE.connect(this.peripherals[rowID].name);
   },
 });
 
