@@ -46,13 +46,10 @@ RCT_EXPORT_METHOD(startScaning)
   RCTLogInfo(@"peripheral:%@", peripheral);
   self.peripheral = peripheral;
 
-  if (peripheral.name == nil) {
-    return;
-  }
-
   [self.bridge.eventDispatcher sendDeviceEventWithName:@"discoverPeripheral"
     body:@{
-      @"name": peripheral.name
+      @"name": peripheral.name,
+      @"identifier": peripheral.identifier.UUIDString
     }];
 }
 

@@ -20,23 +20,23 @@ var GenericTab = React.createClass({
     systemIcon: 'recents',
   },
 
+  peripherals: [],
+
   ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
 
   getInitialState() {
     return {
       led: true,
-      text: 'off',
-      peripherals: ['dummy'],
-      dataSource: this.ds.cloneWithRows([]),
+      dataSource: this.ds.cloneWithRows(this.peripherals),
     };
   },
 
   componentDidMount: function() {
-    DeviceEventEmitter.addListener('discoverPeripheral', (name, identifier) => {
-      this.setState({text: name});
+    DeviceEventEmitter.addListener('discoverPeripheral', (peripheral) => {
+      console.log(peripheral);
 
-      this.setState({peripherals: this.state.peripherals.concat(name)});
-      this.setState({dataSource: this.ds.cloneWithRows(this.state.peripherals)});
+      this.peripherals.push(peripheral.name || peripheral.identifier);
+      this.setState({dataSource: this.ds.cloneWithRows(this.peripherals)});
     });
 
     this.startScaning();
@@ -64,7 +64,7 @@ var GenericTab = React.createClass({
     return (
       <View style={styles.tabContent}>
         <View style={styles.row}>
-          <Text>LED {this.state.text}</Text>
+          <Text>LED</Text>
           <SwitchIOS
             onValueChange={(value) => {
               this.setLed(value);
