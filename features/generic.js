@@ -33,9 +33,7 @@ var GenericTab = React.createClass({
 
   componentDidMount: function() {
     DeviceEventEmitter.addListener('discoverPeripheral', (peripheral) => {
-      console.log(peripheral);
-
-      this.peripherals.push(peripheral.name || peripheral.identifier);
+      this.peripherals.push(peripheral);
       this.setState({dataSource: this.ds.cloneWithRows(this.peripherals)});
     });
 
@@ -86,7 +84,7 @@ var GenericTab = React.createClass({
         <View>
           <View style={styles.listrow}>
             <Text style={styles.text}>
-              {rowData}
+              {rowData.name}
             </Text>
           </View>
           <View style={styles.separator} />
