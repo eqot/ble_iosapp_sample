@@ -13,6 +13,7 @@ var {
 } = React;
 
 var BLE = require('NativeModules').BLE;
+var BLE2 = require('NativeModules').BLE2;
 
 var GenericTab = React.createClass({
   statics: {
@@ -25,6 +26,8 @@ var GenericTab = React.createClass({
   ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
 
   getInitialState() {
+    BLE2.addEvent('foo', 'bar');
+
     return {
       led: true,
       dataSource: this.ds.cloneWithRows(this.peripherals),
