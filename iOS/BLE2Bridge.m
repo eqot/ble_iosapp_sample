@@ -4,5 +4,6 @@
 @interface RCT_EXTERN_MODULE(BLE2, NSObject)
 
 RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location)
+RCT_EXTERN_METHOD(startScanning)
 
 @end

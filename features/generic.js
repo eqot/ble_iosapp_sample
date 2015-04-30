@@ -55,6 +55,7 @@ var GenericTab = React.createClass({
 
   startScaning: function() {
     BLE.startScaning();
+    BLE2.startScanning();
   },
 
   stopScaning: function() {
