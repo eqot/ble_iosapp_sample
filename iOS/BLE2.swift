@@ -83,5 +83,20 @@ class BLE2: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   {
     let characteristics: NSArray = service.characteristics
     println("Found \(characteristics.count) characteristics: \(characteristics)")
+
+    for obj in characteristics {
+      if let characteristic = obj as? CBCharacteristic {
+        if characteristic.properties == CBCharacteristicProperties.Read {
+          peripheral.readValueForCharacteristic(characteristic)
+        }
+      }
+    }
+  }
+
+  func peripheral(peripheral: CBPeripheral!,
+    didUpdateValueForCharacteristic characteristic: CBCharacteristic!,
+    error: NSError!)
+  {
+    println("service uuid: \(characteristic.service.UUID), characteristic uuid: \(characteristic.UUID), value: \(characteristic.value)")
   }
 }
