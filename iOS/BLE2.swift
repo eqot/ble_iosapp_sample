@@ -34,4 +34,8 @@ class BLE2: NSObject, CBCentralManagerDelegate {
   {
     println("peripheral: \(peripheral)")
   }
+
+  @objc func stopScanning() -> Void {
+    self.centralManager.stopScan()
+  }
 }

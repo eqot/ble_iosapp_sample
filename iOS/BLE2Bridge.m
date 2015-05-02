@@ -5,5 +5,6 @@
 
 RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location)
 RCT_EXTERN_METHOD(startScanning)
+RCT_EXTERN_METHOD(stopScanning)
 
 @end
