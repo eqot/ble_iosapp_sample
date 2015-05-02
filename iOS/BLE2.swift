@@ -15,7 +15,7 @@ class BLE2: NSObject, CBCentralManagerDelegate {
     println("Start scanning")
   }
 
-  func centralManagerDidUpdateState(central: CBCentralManager) {
+  func centralManagerDidUpdateState(central: CBCentralManager!) {
     println("state: \(central.state.rawValue)")
 
     switch (central.state) {
@@ -28,8 +28,8 @@ class BLE2: NSObject, CBCentralManagerDelegate {
     }
   }
 
-  func centralManager(central: CBCentralManager,
-    didDiscoverPeripheral peripheral: CBPeripheral,
+  func centralManager(central: CBCentralManager!,
+    didDiscoverPeripheral peripheral: CBPeripheral!,
     advertisementData: [NSObject: AnyObject]!,
     RSSI: NSNumber!)
   {
