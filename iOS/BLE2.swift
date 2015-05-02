@@ -6,11 +6,15 @@ class BLE2: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var centralManager: CBCentralManager!
   var peripheral: CBPeripheral!
 
+  var callbackOnStateUpdated: ((NSArray) -> Void)!
+
   @objc func addEvent(name: String, location: String) -> Void {
     println("BLE2 \(name) \(location)")
   }
 
-  @objc func startScanning() -> Void {
+  @objc func startScanning(callback: (NSArray) -> Void) -> Void {
+    self.callbackOnStateUpdated = callback
+
     self.centralManager = CBCentralManager(delegate: self, queue: nil)
     println("Start scanning")
   }
@@ -20,6 +24,8 @@ class BLE2: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     switch (central.state) {
       case CBCentralManagerState.PoweredOn:
+        self.callbackOnStateUpdated(["test", "foo"])
+
         self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
         break;
 
