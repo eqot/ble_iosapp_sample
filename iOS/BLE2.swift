@@ -2,7 +2,7 @@ import Foundation
 import CoreBluetooth
 
 @objc(BLE2)
-class BLE2: NSObject, CBCentralManagerDelegate {
+class BLE2: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var centralManager: CBCentralManager!
   var peripheral: CBPeripheral!
 
@@ -52,6 +52,9 @@ class BLE2: NSObject, CBCentralManagerDelegate {
     didConnectPeripheral peripheral: CBPeripheral!)
   {
     println("Connected")
+
+    peripheral.delegate = self
+    peripheral.discoverServices(nil)
   }
 
   func centralManager(central: CBCentralManager!,
@@ -59,5 +62,26 @@ class BLE2: NSObject, CBCentralManagerDelegate {
     error: NSError!)
   {
     println("Failed to connect")
+  }
+
+  func peripheral(peripheral: CBPeripheral,
+    didDiscoverServices error: NSError!)
+  {
+    let services: NSArray = peripheral.services
+    println("Found \(services.count) services: \(services)")
+
+    for obj in services {
+      if let service = obj as? CBService {
+        peripheral.discoverCharacteristics(nil, forService: service)
+      }
+    }
+  }
+
+  func peripheral(peripheral: CBPeripheral!,
+    didDiscoverCharacteristicsForService service: CBService!,
+    error: NSError!)
+  {
+    let characteristics: NSArray = service.characteristics
+    println("Found \(characteristics.count) characteristics: \(characteristics)")
   }
 }
