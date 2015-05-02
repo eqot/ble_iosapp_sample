@@ -16,5 +16,22 @@ class BLE2: NSObject, CBCentralManagerDelegate {
 
   func centralManagerDidUpdateState(central: CBCentralManager) {
     println("state: \(central.state.rawValue)")
+
+    switch (central.state) {
+      case CBCentralManagerState.PoweredOn:
+        self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  func centralManager(central: CBCentralManager,
+    didDiscoverPeripheral peripheral: CBPeripheral,
+    advertisementData: [NSObject: AnyObject]!,
+    RSSI: NSNumber!)
+  {
+    println("peripheral: \(peripheral)")
   }
 }
