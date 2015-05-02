@@ -53,4 +53,11 @@ class BLE2: NSObject, CBCentralManagerDelegate {
   {
     println("Connected")
   }
+
+  func centralManager(central: CBCentralManager!,
+    didFailToConnectPeripheral peripheral: CBPeripheral!,
+    error: NSError!)
+  {
+    println("Failed to connect")
+  }
 }
