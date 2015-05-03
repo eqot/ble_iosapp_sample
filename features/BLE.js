@@ -26,6 +26,14 @@ class BLE {
       })
     });
   }
+
+  discoverServices(): Promise {
+    return new Promise((resolve, reject) => {
+      BLENative.discoverServices(function() {
+        resolve();
+      })
+    });
+  }
 }
 
 module.exports = BLE;

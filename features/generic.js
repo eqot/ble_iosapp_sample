@@ -102,6 +102,7 @@ var GenericTab = React.createClass({
 
   onPressRow: function(rowID: number) {
     this.ble.connect(this.peripherals[rowID])
+      .then(this.ble.discoverServices)
       .then(() => {
         console.log('ok');
       });

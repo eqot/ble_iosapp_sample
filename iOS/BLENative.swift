@@ -9,6 +9,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var callbackOnStateUpdated: ((NSArray) -> Void)!
   var callbackOnPeripheralsDiscovered: ((NSArray) -> Void)!
   var callbackOnPeripheralConnected: ((NSArray) -> Void)!
+  var callbackOnServicesDiscovered: ((NSArray) -> Void)!
 
   @objc func startScanning(callback: (NSArray) -> Void) -> Void {
     self.callbackOnStateUpdated = callback
@@ -66,9 +67,6 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     println("Connected")
 
     self.callbackOnPeripheralConnected([])
-    //
-    // peripheral.delegate = self
-    // peripheral.discoverServices(nil)
   }
 
   func centralManager(central: CBCentralManager!,
@@ -78,17 +76,26 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     println("Failed to connect")
   }
 
+  @objc func discoverServices(callback: (NSArray) -> Void) -> Void {
+    self.callbackOnServicesDiscovered = callback
+
+    self.peripheral.delegate = self
+    self.peripheral.discoverServices(nil)
+  }
+
   func peripheral(peripheral: CBPeripheral,
     didDiscoverServices error: NSError!)
   {
     let services: NSArray = peripheral.services
     println("Found \(services.count) services: \(services)")
 
-    for obj in services {
-      if let service = obj as? CBService {
-        peripheral.discoverCharacteristics(nil, forService: service)
-      }
-    }
+    self.callbackOnServicesDiscovered([])
+
+    // for obj in services {
+    //   if let service = obj as? CBService {
+    //     peripheral.discoverCharacteristics(nil, forService: service)
+    //   }
+    // }
   }
 
   func peripheral(peripheral: CBPeripheral!,
