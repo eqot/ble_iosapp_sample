@@ -18,6 +18,14 @@ class BLE {
       });
     });
   }
+
+  connect(name: string): Promise {
+    return new Promise((resolve, reject) => {
+      BLENative.connect(name, function() {
+        resolve();
+      })
+    });
+  }
 }
 
 module.exports = BLE;

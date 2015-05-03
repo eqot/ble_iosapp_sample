@@ -8,6 +8,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
   var callbackOnStateUpdated: ((NSArray) -> Void)!
   var callbackOnPeripheralsDiscovered: ((NSArray) -> Void)!
+  var callbackOnPeripheralConnected: ((NSArray) -> Void)!
 
   @objc func startScanning(callback: (NSArray) -> Void) -> Void {
     self.callbackOnStateUpdated = callback
@@ -51,8 +52,10 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     self.callbackOnPeripheralsDiscovered([peripheral.name, peripheral.identifier.UUIDString])
   }
 
-  @objc func connect(name: NSString) -> Void {
+  @objc func connect(name: NSString, callback: (NSArray) -> Void) -> Void {
     println("Connecting to \(name)")
+
+    self.callbackOnPeripheralConnected = callback
 
     self.centralManager.connectPeripheral(self.peripheral, options: nil)
   }
@@ -62,8 +65,10 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   {
     println("Connected")
 
-    peripheral.delegate = self
-    peripheral.discoverServices(nil)
+    self.callbackOnPeripheralConnected([])
+    //
+    // peripheral.delegate = self
+    // peripheral.discoverServices(nil)
   }
 
   func centralManager(central: CBCentralManager!,
