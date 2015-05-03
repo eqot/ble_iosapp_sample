@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "RCTBridgeModule.h"
 
-@interface RCT_EXTERN_MODULE(BLE2, NSObject)
+@interface RCT_EXTERN_MODULE(BLENative, NSObject)
 
 RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location)
 RCT_EXTERN_METHOD(startScanning:(RCTResponseSenderBlock)callback)

@@ -1,8 +1,8 @@
 import Foundation
 import CoreBluetooth
 
-@objc(BLE2)
-class BLE2: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+@objc(BLENative)
+class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var centralManager: CBCentralManager!
   var peripheral: CBPeripheral!
 

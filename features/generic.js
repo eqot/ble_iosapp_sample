@@ -13,7 +13,7 @@ var {
 } = React;
 
 var BLE = require('NativeModules').BLE;
-var BLE2 = require('NativeModules').BLE2;
+var BLENative = require('NativeModules').BLENative;
 
 var GenericTab = React.createClass({
   statics: {
@@ -26,7 +26,7 @@ var GenericTab = React.createClass({
   ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
 
   getInitialState() {
-    BLE2.addEvent('foo', 'bar');
+    BLENative.addEvent('foo', 'bar');
 
     return {
       led: true,
@@ -55,7 +55,7 @@ var GenericTab = React.createClass({
 
   startScaning: function() {
     BLE.startScaning();
-    BLE2.startScanning(function (foo, bar) {
+    BLENative.startScanning(function (foo, bar) {
       console.log(foo);
       console.log(bar);
     });
@@ -63,7 +63,7 @@ var GenericTab = React.createClass({
 
   stopScaning: function() {
     BLE.stopScaning();
-    BLE2.stopScanning();
+    BLENative.stopScanning();
   },
 
   render: function() {
@@ -103,7 +103,7 @@ var GenericTab = React.createClass({
 
   onPressRow: function(rowID: number) {
     // BLE.connect(this.peripherals[rowID].name);
-    BLE2.connect(this.peripherals[rowID].name);
+    BLENative.connect(this.peripherals[rowID].name);
   },
 });
 
