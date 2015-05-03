@@ -12,7 +12,6 @@ var {
   DeviceEventEmitter,
 } = React;
 
-var BLE = require('NativeModules').BLE;
 var BLENative = require('NativeModules').BLENative;
 
 var GenericTab = React.createClass({
@@ -52,7 +51,6 @@ var GenericTab = React.createClass({
   },
 
   startScaning: function() {
-    BLE.startScaning();
     BLENative.startScanning(function (foo, bar) {
       console.log(foo);
       console.log(bar);
@@ -60,7 +58,6 @@ var GenericTab = React.createClass({
   },
 
   stopScaning: function() {
-    BLE.stopScaning();
     BLENative.stopScanning();
   },
 
@@ -100,7 +97,6 @@ var GenericTab = React.createClass({
   },
 
   onPressRow: function(rowID: number) {
-    // BLE.connect(this.peripherals[rowID].name);
     BLENative.connect(this.peripherals[rowID].name);
   },
 });
