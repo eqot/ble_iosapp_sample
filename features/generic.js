@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var BLE = require('./BLE');
 
 var {
   StyleSheet,
@@ -37,7 +38,8 @@ var GenericTab = React.createClass({
       this.setState({dataSource: this.ds.cloneWithRows(this.peripherals)});
     });
 
-    this.startScaning();
+    this.ble = new BLE();
+    this.startScanning();
   },
 
   setLed: function(value) {
@@ -50,11 +52,13 @@ var GenericTab = React.createClass({
     }
   },
 
-  startScaning: function() {
-    BLENative.startScanning(function (foo, bar) {
-      console.log(foo);
-      console.log(bar);
-    });
+  startScanning: function() {
+    this.ble.startScanning()
+      .then(this.ble.scanPeripherals)
+      .then((name) => {
+        this.peripherals.push(name);
+        this.setState({dataSource: this.ds.cloneWithRows(this.peripherals)});
+      });
   },
 
   stopScaning: function() {
@@ -87,7 +91,7 @@ var GenericTab = React.createClass({
         <View>
           <View style={styles.listrow}>
             <Text style={styles.text}>
-              {rowData.name}
+              {rowData}
             </Text>
           </View>
           <View style={styles.separator} />

@@ -7,6 +7,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var peripheral: CBPeripheral!
 
   var callbackOnStateUpdated: ((NSArray) -> Void)!
+  var callbackOnPeripheralsDiscovered: ((NSArray) -> Void)!
 
   @objc func startScanning(callback: (NSArray) -> Void) -> Void {
     self.callbackOnStateUpdated = callback
@@ -20,14 +21,22 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     switch (central.state) {
       case CBCentralManagerState.PoweredOn:
-        self.callbackOnStateUpdated(["test", "foo"])
-
-        self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
+        self.callbackOnStateUpdated([])
         break;
 
       default:
         break;
     }
+  }
+
+  @objc func stopScanning() -> Void {
+    self.centralManager.stopScan()
+  }
+
+  @objc func scanPeripherals(callback: (NSArray) -> Void) -> Void {
+    self.callbackOnPeripheralsDiscovered = callback
+
+    self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
   }
 
   func centralManager(central: CBCentralManager!,
@@ -38,10 +47,8 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     println("peripheral: \(peripheral)")
 
     self.peripheral = peripheral
-  }
 
-  @objc func stopScanning() -> Void {
-    self.centralManager.stopScan()
+    self.callbackOnPeripheralsDiscovered([peripheral.name, peripheral.identifier.UUIDString])
   }
 
   @objc func connect(name: NSString) -> Void {
