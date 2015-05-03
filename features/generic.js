@@ -26,8 +26,6 @@ var GenericTab = React.createClass({
   ds: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
 
   getInitialState() {
-    BLENative.addEvent('foo', 'bar');
-
     return {
       led: true,
       dataSource: this.ds.cloneWithRows(this.peripherals),

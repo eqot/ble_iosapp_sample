@@ -8,10 +8,6 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
   var callbackOnStateUpdated: ((NSArray) -> Void)!
 
-  @objc func addEvent(name: String, location: String) -> Void {
-    println("BLE2 \(name) \(location)")
-  }
-
   @objc func startScanning(callback: (NSArray) -> Void) -> Void {
     self.callbackOnStateUpdated = callback
 
