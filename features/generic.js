@@ -60,8 +60,12 @@ var GenericTab = React.createClass({
       });
   },
 
-  stopScaning: function() {
-    BLENative.stopScanning();
+  onPressRow: function(rowID: number) {
+    this.ble.connect(this.peripherals[rowID])
+      .then(this.ble.discoverServices)
+      .then(() => {
+        console.log('ok');
+      });
   },
 
   render: function() {
@@ -97,14 +101,6 @@ var GenericTab = React.createClass({
         </View>
       </TouchableHighlight>
     );
-  },
-
-  onPressRow: function(rowID: number) {
-    this.ble.connect(this.peripherals[rowID])
-      .then(this.ble.discoverServices)
-      .then(() => {
-        console.log('ok');
-      });
   },
 });
 
