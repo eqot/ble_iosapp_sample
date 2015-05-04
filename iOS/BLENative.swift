@@ -81,7 +81,14 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     let services: NSArray = peripheral.services
     println("Found \(services.count) services: \(services)")
 
-    self.callbackOnServicesDiscovered([])
+    var uuids: Array<String> = []
+    for obj in services {
+      if let service = obj as? CBService {
+        uuids.append(service.UUID.UUIDString)
+      }
+    }
+
+    self.callbackOnServicesDiscovered([uuids])
 
     // for obj in services {
     //   if let service = obj as? CBService {

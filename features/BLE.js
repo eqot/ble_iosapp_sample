@@ -25,8 +25,8 @@ class BLE {
 
   discoverServices(): Promise {
     return new Promise((resolve, reject) => {
-      BLENative.discoverServices(function() {
-        resolve();
+      BLENative.discoverServices(function(services) {
+        resolve(services);
       })
     });
   }

@@ -62,8 +62,8 @@ var GenericTab = React.createClass({
     this.ble.stopScanning();
     this.ble.connect(this.peripherals[rowID])
       .then(this.ble.discoverServices)
-      .then(() => {
-        console.log('ok');
+      .then((services) => {
+        console.log(services);
       });
   },
 
