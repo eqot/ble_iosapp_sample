@@ -47,8 +47,6 @@ var GenericTab = React.createClass({
       this.startScaning();
     } else {
       this.state.text = '';
-
-      this.stopScaning();
     }
   },
 
@@ -61,6 +59,7 @@ var GenericTab = React.createClass({
   },
 
   onPressRow: function(rowID: number) {
+    this.ble.stopScanning();
     this.ble.connect(this.peripherals[rowID])
       .then(this.ble.discoverServices)
       .then(() => {

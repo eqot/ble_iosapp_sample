@@ -11,6 +11,10 @@ class BLE {
     });
   }
 
+  stopScanning() {
+    BLENative.stopScanning();
+  }
+
   connect(name: string): Promise {
     return new Promise((resolve, reject) => {
       BLENative.connect(name, function() {
