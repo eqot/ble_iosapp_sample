@@ -4,6 +4,7 @@ import CoreBluetooth
 @objc(BLENative)
 class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var centralManager: CBCentralManager!
+  var peripherals: Array<CBPeripheral>!
   var peripheral: CBPeripheral!
 
   var callbackOnPeripheralsDiscovered: ((NSArray) -> Void)!
@@ -13,6 +14,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   @objc func startScanning(callback: (NSArray) -> Void) -> Void {
     self.callbackOnPeripheralsDiscovered = callback
 
+    self.peripherals = []
     self.centralManager = CBCentralManager(delegate: self, queue: nil)
   }
 
@@ -40,15 +42,34 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     advertisementData: [NSObject: AnyObject]!,
     RSSI: NSNumber!)
   {
-    self.peripheral = peripheral
+    if (findPeripheral(peripheral.name) == -1) {
+      self.peripherals.append(peripheral)
+    }
+    println("\(self.peripherals)")
 
     self.callbackOnPeripheralsDiscovered([peripheral.name, peripheral.identifier.UUIDString])
+  }
+
+  func findPeripheral(name: NSString) -> NSInteger {
+    for (index, peripheral) in enumerate(self.peripherals) {
+      if peripheral.name == name {
+        return index
+      }
+    }
+
+    return -1
   }
 
   @objc func connect(name: NSString, callback: (NSArray) -> Void) -> Void {
     println("Connecting to \(name)")
 
     self.callbackOnPeripheralConnected = callback
+
+    let index = findPeripheral(name)
+    if (index == -1) {
+      return
+    }
+    self.peripheral = self.peripherals[index]
 
     self.centralManager.connectPeripheral(self.peripheral, options: nil)
   }
