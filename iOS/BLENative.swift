@@ -14,12 +14,9 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     self.callbackOnPeripheralsDiscovered = callback
 
     self.centralManager = CBCentralManager(delegate: self, queue: nil)
-    println("Start scanning")
   }
 
   func centralManagerDidUpdateState(central: CBCentralManager!) {
-    println("state: \(central.state.rawValue)")
-
     switch (central.state) {
       case CBCentralManagerState.PoweredOn:
         self.scanPeripherals()
@@ -43,8 +40,6 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     advertisementData: [NSObject: AnyObject]!,
     RSSI: NSNumber!)
   {
-    println("peripheral: \(peripheral)")
-
     self.peripheral = peripheral
 
     self.callbackOnPeripheralsDiscovered([peripheral.name, peripheral.identifier.UUIDString])
