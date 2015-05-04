@@ -6,13 +6,12 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var centralManager: CBCentralManager!
   var peripheral: CBPeripheral!
 
-  var callbackOnStateUpdated: ((NSArray) -> Void)!
   var callbackOnPeripheralsDiscovered: ((NSArray) -> Void)!
   var callbackOnPeripheralConnected: ((NSArray) -> Void)!
   var callbackOnServicesDiscovered: ((NSArray) -> Void)!
 
   @objc func startScanning(callback: (NSArray) -> Void) -> Void {
-    self.callbackOnStateUpdated = callback
+    self.callbackOnPeripheralsDiscovered = callback
 
     self.centralManager = CBCentralManager(delegate: self, queue: nil)
     println("Start scanning")
@@ -23,7 +22,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     switch (central.state) {
       case CBCentralManagerState.PoweredOn:
-        self.callbackOnStateUpdated([])
+        self.scanPeripherals()
         break;
 
       default:
@@ -35,9 +34,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     self.centralManager.stopScan()
   }
 
-  @objc func scanPeripherals(callback: (NSArray) -> Void) -> Void {
-    self.callbackOnPeripheralsDiscovered = callback
-
+  func scanPeripherals() {
     self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
   }
 

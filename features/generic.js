@@ -54,7 +54,6 @@ var GenericTab = React.createClass({
 
   startScanning: function() {
     this.ble.startScanning()
-      .then(this.ble.scanPeripherals)
       .then((name) => {
         this.peripherals.push(name);
         this.setState({dataSource: this.ds.cloneWithRows(this.peripherals)});
