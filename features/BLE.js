@@ -30,6 +30,14 @@ class BLE {
       })
     });
   }
+
+  discoverCharacteristics(uuid: string): Promise {
+    return new Promise((resolve, reject) => {
+      BLENative.discoverCharacteristics(uuid, function(characteristics) {
+        resolve(characteristics);
+      })
+    });
+  }
 }
 
 module.exports = BLE;

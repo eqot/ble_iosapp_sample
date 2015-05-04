@@ -10,6 +10,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var callbackOnPeripheralsDiscovered: ((NSArray) -> Void)!
   var callbackOnPeripheralConnected: ((NSArray) -> Void)!
   var callbackOnServicesDiscovered: ((NSArray) -> Void)!
+  var callbackOnCharacteristicsDiscovered: ((NSArray) -> Void)!
 
   @objc func startScanning(callback: (NSArray) -> Void) -> Void {
     self.callbackOnPeripheralsDiscovered = callback
@@ -110,12 +111,30 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
 
     self.callbackOnServicesDiscovered([uuids])
+  }
 
-    // for obj in services {
-    //   if let service = obj as? CBService {
-    //     peripheral.discoverCharacteristics(nil, forService: service)
-    //   }
-    // }
+  @objc func discoverCharacteristics(uuid: NSString, callback: (NSArray) -> Void) -> Void {
+    self.callbackOnCharacteristicsDiscovered = callback
+
+    var index = findService(uuid)
+    if (index == -1) {
+      return
+    }
+
+    self.peripheral.discoverCharacteristics(nil, forService: self.peripheral.services[index] as! CBService)
+    // self.peripheral.discoverCharacteristics(nil, forService: self.services[index])
+  }
+
+  func findService(uuid: NSString) -> NSInteger {
+    for (index, obj) in enumerate(peripheral.services) {
+      if let service = obj as? CBService {
+        if (service.UUID.UUIDString == uuid) {
+          return index
+        }
+      }
+    }
+
+    return -1
   }
 
   func peripheral(peripheral: CBPeripheral!,
@@ -125,13 +144,22 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     let characteristics: NSArray = service.characteristics
     println("Found \(characteristics.count) characteristics: \(characteristics)")
 
+    var uuids: Array<String> = []
     for obj in characteristics {
       if let characteristic = obj as? CBCharacteristic {
-        if characteristic.properties == CBCharacteristicProperties.Read {
-          peripheral.readValueForCharacteristic(characteristic)
-        }
+        uuids.append(characteristic.UUID.UUIDString)
       }
     }
+
+    self.callbackOnCharacteristicsDiscovered([uuids])
+
+    // for obj in characteristics {
+    //   if let characteristic = obj as? CBCharacteristic {
+    //     if characteristic.properties == CBCharacteristicProperties.Read {
+    //       peripheral.readValueForCharacteristic(characteristic)
+    //     }
+    //   }
+    // }
   }
 
   func peripheral(peripheral: CBPeripheral!,
