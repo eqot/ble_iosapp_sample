@@ -67,6 +67,11 @@ var GenericTab = React.createClass({
         this.ble.discoverCharacteristics(services[0])
           .then((characteristics) => {
             console.log(characteristics);
+
+            this.ble.read(characteristics[0])
+              .then((value) => {
+                console.log(value);
+              });
           });
       });
   },

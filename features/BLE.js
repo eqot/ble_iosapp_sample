@@ -38,6 +38,14 @@ class BLE {
       })
     });
   }
+
+  read(uuid: string): Promise {
+    return new Promise((resolve, reject) => {
+      BLENative.read(uuid, function(value) {
+        resolve(value);
+      })
+    });
+  }
 }
 
 module.exports = BLE;
