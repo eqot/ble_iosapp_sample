@@ -189,7 +189,9 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     println("service uuid: \(characteristic.service.UUID), characteristic uuid: \(characteristic.UUID), value: \(characteristic.value)")
 
     if (characteristic.value != nil) {
-      self.callbackOnValueRead([characteristic.value])
+      var value: CUnsignedChar = 0
+      characteristic.value.getBytes(&value, length: 1)
+      self.callbackOnValueRead([NSInteger(value)])
     } else {
       self.callbackOnValueRead([-1])
     }
