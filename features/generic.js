@@ -68,12 +68,22 @@ var GenericTab = React.createClass({
           .then((characteristics) => {
             console.log(characteristics);
 
-            this.ble.read(characteristics[0])
-              .then((value) => {
-                console.log(value);
-              });
+            this.startBlinking(characteristics[1]);
+
+            // this.ble.read(characteristics[1])
+            //   .then((value) => {
+            //     console.log(value);
+            //   });
           });
       });
+  },
+
+  startBlinking: function(uuid: string) {
+    var value = 0;
+    setInterval(() => {
+      this.ble.write(uuid, value);
+      value ^= 255;
+    }, 1000);
   },
 
   render: function() {

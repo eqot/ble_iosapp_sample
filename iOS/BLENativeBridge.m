@@ -9,5 +9,6 @@ RCT_EXTERN_METHOD(connect:(NSString *)name callback:(RCTResponseSenderBlock)call
 RCT_EXTERN_METHOD(discoverServices:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(discoverCharacteristics:(NSString *)uuid callback:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(read:(NSString *)uuid callback:(RCTResponseSenderBlock)callback)
+RCT_EXTERN_METHOD(write:(NSString *)uuid value:(NSInteger)value callback:(RCTResponseSenderBlock)callback)
 
 @end

@@ -13,6 +13,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var callbackOnServicesDiscovered: ((NSArray) -> Void)!
   var callbackOnCharacteristicsDiscovered: ((NSArray) -> Void)!
   var callbackOnValueRead: ((NSArray) -> Void)!
+  var callbackOnValueWrite: ((NSArray) -> Void)!
 
   @objc func startScanning(callback: (NSArray) -> Void) -> Void {
     self.callbackOnPeripheralsDiscovered = callback
@@ -195,5 +196,27 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     } else {
       self.callbackOnValueRead([-1])
     }
+  }
+
+  @objc func write(uuid: NSString, value: NSInteger, callback: (NSArray) -> Void) -> Void {
+    self.callbackOnValueWrite = callback
+
+    let index = findCharacteristic(uuid)
+    if (index == -1) {
+      return
+    }
+
+    var v: CUnsignedChar = CUnsignedChar(value)
+    let data: NSData = NSData(bytes: &v, length: 1)
+    self.peripheral.writeValue(data,
+      forCharacteristic: self.characteristics[index] as! CBCharacteristic,
+      type: CBCharacteristicWriteType.WithResponse)
+  }
+
+  func peripheral(peripheral: CBPeripheral!,
+    didWriteValueForCharacteristic characteristic: CBCharacteristic!,
+    error: NSError!)
+  {
+    self.callbackOnValueWrite([])
   }
 }
