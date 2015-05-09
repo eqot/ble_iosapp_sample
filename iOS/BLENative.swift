@@ -4,7 +4,7 @@ import CoreBluetooth
 @objc(BLENative)
 class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
   var centralManager: CBCentralManager!
-  var peripherals: Array<CBPeripheral>!
+  var peripherals: NSMutableArray!
   var peripheral: CBPeripheral!
   var characteristics: NSArray!
 
@@ -46,10 +46,12 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     advertisementData: [NSObject: AnyObject]!,
     RSSI: NSNumber!)
   {
-    if (findPeripheral(peripheral.name) == -1) {
-      self.peripherals.append(peripheral)
+    println("\(peripheral)")
+
+    if (peripheral.name == nil || findPeripheral(peripheral.name) != -1) {
+      return
     }
-    println("\(self.peripherals)")
+    self.peripherals.addObject(peripheral)
 
     self.callbackOnPeripheralsDiscovered([peripheral.name, peripheral.identifier.UUIDString])
   }
@@ -73,7 +75,7 @@ class BLENative: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     if (index == -1) {
       return
     }
-    self.peripheral = self.peripherals[index]
+    self.peripheral = self.peripherals[index] as! CBPeripheral
 
     self.centralManager.connectPeripheral(self.peripheral, options: nil)
   }
