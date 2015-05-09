@@ -28,6 +28,7 @@ var GenericTab = React.createClass({
   getInitialState() {
     return {
       led: true,
+      timer: null,
       dataSource: this.ds.cloneWithRows(this.peripherals),
     };
   },
@@ -49,6 +50,7 @@ var GenericTab = React.createClass({
       this.startScanningAndConnecting('ble_app_sample2');
     } else {
       this.stopScanning();
+      this.stopBlinking();
     }
   },
 
@@ -61,6 +63,7 @@ var GenericTab = React.createClass({
         this.ble.discoverCharacteristics(services[0])
           .then((characteristics) => {
             console.log(characteristics);
+            this.stopScanning();
 
             this.startBlinking(characteristics[1]);
           });
@@ -101,10 +104,19 @@ var GenericTab = React.createClass({
 
   startBlinking: function(uuid: string) {
     var value = 0;
-    setInterval(() => {
+
+    this.timer = setInterval(() => {
       this.ble.write(uuid, value);
       value ^= 255;
     }, 1000);
+  },
+
+  stopBlinking: function() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+
+    this.timer = null;
   },
 
   render: function() {
