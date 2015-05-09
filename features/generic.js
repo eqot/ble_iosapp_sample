@@ -44,9 +44,9 @@ var GenericTab = React.createClass({
 
   setLed: function(value) {
     if (value) {
-      this.startScaning();
+      this.startScanning();
     } else {
-      this.state.text = '';
+      this.stopScanning();
     }
   },
 
@@ -58,8 +58,12 @@ var GenericTab = React.createClass({
       });
   },
 
-  onPressRow: function(rowID: number) {
+  stopScanning: function() {
     this.ble.stopScanning();
+  },
+
+  onPressRow: function(rowID: number) {
+    this.stopScanning();
     this.ble.connect(this.peripherals[rowID])
       .then(this.ble.discoverServices)
       .then((services) => {
