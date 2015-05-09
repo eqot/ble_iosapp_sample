@@ -3,9 +3,9 @@
 var BLENative = require('NativeModules').BLENative;
 
 class BLE {
-  startScanning(): Promise {
+  startScanning(targetName: string): Promise {
     return new Promise((resolve, reject) => {
-      BLENative.startScanning(function(name, id) {
+      BLENative.startScanning(targetName, function(name, id) {
         resolve(name);
       });
     });

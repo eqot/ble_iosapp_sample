@@ -39,15 +39,32 @@ var GenericTab = React.createClass({
     });
 
     this.ble = new BLE();
-    this.startScanning();
+    // this.startScanning();
+    this.startScanningAndConnecting('ble_app_sample2');
   },
 
   setLed: function(value) {
     if (value) {
-      this.startScanning();
+      // this.startScanning();
+      this.startScanningAndConnecting('ble_app_sample2');
     } else {
       this.stopScanning();
     }
+  },
+
+  startScanningAndConnecting: function(name: string) {
+    this.ble.startScanning(name)
+      .then(this.ble.connect)
+      .then(this.ble.discoverServices)
+      .then((services) => {
+        console.log(services);
+        this.ble.discoverCharacteristics(services[0])
+          .then((characteristics) => {
+            console.log(characteristics);
+
+            this.startBlinking(characteristics[1]);
+          });
+      });
   },
 
   startScanning: function() {
